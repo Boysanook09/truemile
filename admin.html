@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Backend</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+        <div class="admin-bg-glow"></div>
+        <header class="admin-header modern-card">
+            <h1 class="gradient-title"><span class="icon-admin">🛠️</span> Admin Backend</h1>
+            <nav class="admin-nav">
+                <button class="admin-nav-btn" onclick="showAdminSection('adminProductSection')">สินค้า</button>
+                <button class="admin-nav-btn" onclick="showAdminSection('adminRepairSection')">งานซ่อม</button>
+                <button class="admin-nav-btn" onclick="showAdminSection('adminUserSection')">ผู้ใช้</button>
+                <button class="admin-nav-btn" onclick="showAdminSection('adminSendRepairSection')">แจ้งงานซ่อม</button>
+                <button class="admin-nav-btn" onclick="showAdminSection('userSystemSection')">ระบบ User</button>
+            </nav>
+        </header>
+        <main class="admin-main">
+            <section id="adminProductSection" class="admin-section modern-card">
+                <h2 class="gradient-title"><span class="icon-product">📦</span> จัดการสินค้า (Admin)</h2>
+                <form id="adminAddProductForm" class="modern-form">
+                    <div class="form-row">
+                        <label>ชื่อสินค้า
+                            <input type="text" id="adminProductName" required placeholder="กรอกชื่อสินค้า">
+                        </label>
+                        <label>จำนวน
+                            <input type="number" id="adminProductQty" required min="1" placeholder="จำนวน">
+                        </label>
+                        <label>ราคา
+                            <input type="number" id="adminProductPrice" min="0" step="0.01" placeholder="บาท">
+                        </label>
+                    </div>
+                    <div class="form-row">
+                        <label>รายละเอียด
+                            <input type="text" id="adminProductDetail" placeholder="รายละเอียดสินค้า">
+                        </label>
+                        <label>รูปภาพ (อัปโหลด)
+                            <input type="file" id="adminProductImgFile" accept="image/*">
+                        </label>
+                        <label>รูปภาพ (URL)
+                            <input type="text" id="adminProductImg" placeholder="URL รูปสินค้า">
+                        </label>
+                    </div>
+                    <button type="submit" class="modern-btn">เพิ่มสินค้า</button>
+                </form>
+                <div id="adminAddProductMsg" class="msg-anim"></div>
+                <h3 class="gradient-title">รายการสินค้า</h3>
+                <table id="adminProductTable" class="modern-table">
+                    <thead><tr><th>ชื่อสินค้า</th><th>จำนวนคงเหลือ</th><th>ราคา</th><th>รายละเอียด</th><th>รูป</th><th>การจัดการ</th></tr></thead>
+                    <tbody id="adminProductList"></tbody>
+                </table>
+                <div id="editProductForm" class="modern-form">
+                    <h3>แก้ไขสินค้า</h3>
+                    <label>ชื่อสินค้า: <input type="text" id="editProductName" disabled></label>
+                    <label>จำนวน: <input type="number" id="editProductQty" min="0"></label>
+                    <label>ราคา: <input type="number" id="editProductPrice" min="0" step="0.01"></label>
+                    <label>รายละเอียด: <input type="text" id="editProductDetail"></label>
+                    <label>รูปภาพ (URL): <input type="text" id="editProductImg"></label>
+                    <button onclick="saveProductEdit()" class="modern-btn">บันทึก</button>
+                    <button onclick="cancelProductEdit()" class="modern-btn">ยกเลิก</button>
+                </div>
+                <div id="productNotifyMsg" class="msg-anim"></div>
+            </section>
+            <section id="adminRepairSection" class="admin-section modern-card">
+                <h2 class="gradient-title"><span class="icon-repair">🛠️</span> จัดการงานซ่อม (Admin/ช่าง)</h2>
+                <table id="adminRepairTable" class="modern-table">
+                    <thead><tr><th>ชื่อผู้แจ้ง</th><th>วันที่</th><th>เวลา</th><th>รายละเอียด</th><th>สถานะ</th><th>อัปเดตสถานะ</th></tr></thead>
+                    <tbody id="adminRepairList"></tbody>
+                </table>
+                <div id="adminRepairMsg" class="msg-anim"></div>
+            </section>
+            <section id="adminUserSection" class="admin-section modern-card">
+                <h2 class="gradient-title"><span class="icon-user">👤</span> จัดการผู้ใช้</h2>
+                <table id="userTable" class="modern-table">
+                    <thead>
+                        <tr><th>Username</th><th>Role</th><th>Action</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>admin</td><td>Admin</td><td><button disabled>แก้ไข</button></td></tr>
+                        <tr><td>user</td><td>User</td><td><button onclick="editUser('user')">แก้ไข</button></td></tr>
+                    </tbody>
+                </table>
+                <div id="editUserForm1" class="modern-form edit-user-form1">
+                    <h3>แก้ไขผู้ใช้</h3>
+                    <label>Username: <input type="text" id="editUsername1" disabled></label><br>
+                    <label>Password: <input type="password" id="editPassword1"></label><br>
+                    <button onclick="saveUser1()" class="modern-btn">บันทึก</button>
+                    <button onclick="cancelEdit1()" class="modern-btn">ยกเลิก</button>
+                </div>
+                <div id="editConfirmModal" class="modal">
+                    <div class="modal-content">
+                        <p>ยืนยันการบันทึกข้อมูลผู้ใช้นี้?</p>
+                        <button id="confirmEditBtn">ยืนยัน</button>
+                        <button id="cancelEditBtn">ยกเลิก</button>
+                    </div>
+                </div>
+            </section>
+            <section id="adminSendRepairSection" class="admin-section modern-card">
+                <h2 class="gradient-title"><span class="icon-send">📨</span> แจ้งงานซ่อมไปยังแผนงช่าง</h2>
+                <form id="adminSendRepairForm" class="modern-form">
+                    <div class="form-row">
+                        <label>ชื่อผู้แจ้ง
+                            <input type="text" id="adminRepairName" required placeholder="ชื่อผู้แจ้ง">
+                        </label>
+                        <label>วันที่
+                            <input type="date" id="adminRepairDate" required>
+                        </label>
+                        <label>เวลา
+                            <input type="time" id="adminRepairTime" required>
+                        </label>
+                    </div>
+                    <div class="form-row">
+                        <label>รายละเอียดปัญหา
+                            <input type="text" id="adminRepairDetail" required placeholder="รายละเอียด">
+                        </label>
+                        <label>สถานที่
+                            <input type="text" id="adminRepairLocation" placeholder="สถานที่">
+                        </label>
+                        <label>เบอร์ติดต่อ
+                            <input type="tel" id="adminRepairPhone" placeholder="เบอร์ติดต่อ">
+                        </label>
+                    </div>
+                    <button type="submit" class="modern-btn">แจ้งงานซ่อม</button>
+                </form>
+                <div id="adminSendRepairMsg" class="msg-anim"></div>
+            </section>
+            <section id="userSystemSection" class="admin-section modern-card">
+                <h2 class="gradient-title"><span class="icon-user">👤</span> ระบบ User</h2>
+                <form id="addUserForm" class="modern-form">
+                    <label>Username: <input type="text" id="newUsername" required placeholder="Username"></label>
+                    <label>Password: <input type="password" id="newPassword" required placeholder="Password"></label>
+                    <button type="submit" class="modern-btn">สร้างผู้ใช้ใหม่</button>
+                </form>
+                <div id="addUserMessage" class="msg-anim"></div>
+                <input type="text" id="searchUser" placeholder="ค้นหาผู้ใช้..." class="modern-form search-input">
+                <h3 class="gradient-title">รายชื่อผู้ใช้</h3>
+                <table id="userListTable" class="modern-table">
+                    <thead>
+                        <tr><th>Username</th><th>Role</th><th>Action</th></tr>
+                    </thead>
+                    <tbody id="userList"></tbody>
+                </table>
+                <div id="editUserForm" class="modern-form">
+                    <h3>แก้ไขผู้ใช้</h3>
+                    <label>Username: <input type="text" id="editUsername" disabled></label>
+                    <label>Password: <input type="password" id="editPassword"></label>
+                    <label>Role: 
+                        <select id="editRole">
+                            <option value="User">User</option>
+                            <option value="Admin">Admin</option>
+                        </select>
+                    </label>
+                    <button onclick="saveUser()" class="modern-btn">บันทึก</button>
+                    <button onclick="cancelEdit()" class="modern-btn">ยกเลิก</button>
+                </div>
+            </section>
+            <section id="adminSalesCustomerSection" class="admin-section modern-card">
+                <h2 class="gradient-title"><span class="icon-sales">🛒</span> ข้อมูลลูกค้าจากเซลส์</h2>
+                <table id="adminSalesCustomerTable" class="modern-table">
+                    <thead><tr><th>ชื่อ</th><th>วัน-เวลา</th><th>ที่อยู่</th><th>เบอร์</th><th>สถานะ</th><th>รูปถ่าย</th><th>การจัดการ</th></tr></thead>
+                    <tbody id="adminSalesCustomerList"></tbody>
+                </table>
+                <div id="editSalesCustomerForm" class="modern-form">
+                    <h3>แก้ไขข้อมูลลูกค้า</h3>
+                    <label>ชื่อ: <input type="text" id="editCustomerName"></label>
+                    <label>วัน-เวลา: <input type="datetime-local" id="editCustomerDatetime"></label>
+                    <label>ที่อยู่: <input type="text" id="editCustomerAddress"></label>
+                    <label>เบอร์โทร: <input type="tel" id="editCustomerPhone"></label>
+                    <label>สถานะ: 
+                        <select id="editCustomerStatus">
+                            <option value="ใหม่">ใหม่</option>
+                            <option value="ติดตาม">ติดตาม</option>
+                            <option value="ปิดการขาย">ปิดการขาย</option>
+                        </select>
+                    </label>
+                    <label>รูปถ่าย: <input type="file" id="editCustomerPhoto" accept="image/*"></label>
+                    <button onclick="saveEditSalesCustomer()" class="modern-btn">บันทึก</button>
+                    <button onclick="cancelEditSalesCustomer()" class="modern-btn">ยกเลิก</button>
+                </div>
+            </section>
+        </main>
+    <script>
+    function showAdminSection(id) {
+        document.querySelectorAll('.admin-section').forEach(sec => sec.style.display = 'none');
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'block';
+    }
+    document.getElementById('userManagementMenu').onclick = function() {
+        document.getElementById('userManagementSection').style.display = 'block';
+        document.getElementById('userSystemSection').style.display = 'none';
+    };
+    document.getElementById('userSystemMenu').onclick = function() {
+        document.getElementById('userSystemSection').style.display = 'block';
+        document.getElementById('userManagementSection').style.display = 'none';
+    };
+    let _pendingEdit = null;
+    function renderUserList(filter = '') {
+        const users = getUsers();
+        const tbody = document.getElementById('userList');
+        tbody.innerHTML = '';
+        users.filter(u => u.username.includes(filter)).forEach((u, idx) => {
+            tbody.innerHTML += `<tr><td>${u.username}</td><td>${u.role}</td><td>` +
+                (u.username !== 'admin' ?
+                `<button onclick="editUser('${u.username}')">แก้ไข</button> <button onclick="deleteUser('${u.username}')">ลบ</button>` :
+                `<button disabled>แก้ไข</button> <button disabled>ลบ</button>`) +
+                `</td></tr>`;
+        });
+    }
+    document.getElementById('searchUser').oninput = function() {
+        renderUserList(this.value.trim());
+    };
+    function editUser(username) {
+        const users = getUsers();
+        const user = users.find(u => u.username === username);
+        document.getElementById('editUserForm').style.display = 'block';
+        document.getElementById('editUsername').value = user.username;
+        document.getElementById('editPassword').value = user.password;
+        document.getElementById('editRole').value = user.role;
+        window._editingUser = username;
+    }
+    function saveUserEdit() {
+        event.preventDefault();
+        _pendingEdit = {
+            username: document.getElementById('editUsername').value,
+            password: document.getElementById('editPassword').value,
+            role: document.getElementById('editRole').value
+        };
+        document.getElementById('editConfirmModal').style.display = 'block';
+    }
+    document.getElementById('confirmEditBtn').onclick = function() {
+        const users = getUsers();
+        const idx = users.findIndex(u => u.username === _pendingEdit.username);
+        if (idx !== -1) {
+            users[idx].password = _pendingEdit.password;
+            users[idx].role = _pendingEdit.role;
+            setUsers(users);
+            renderUserList();
+        }
+        document.getElementById('editUserForm').style.display = 'none';
+        document.getElementById('editConfirmModal').style.display = 'none';
+        _pendingEdit = null;
+    };
+    document.getElementById('cancelEditBtn').onclick = function() {
+        document.getElementById('editConfirmModal').style.display = 'none';
+        _pendingEdit = null;
+    };
+    function deleteUser(username) {
+        if (!confirm('ต้องการลบผู้ใช้นี้จริงหรือไม่?')) return;
+        let users = getUsers();
+        users = users.filter(u => u.username !== username);
+        setUsers(users);
+        renderUserList();
+    }
+    // User storage in localStorage
+    function getUsers() {
+        return JSON.parse(localStorage.getItem('users') || '[{"username":"admin","password":"1234","role":"Admin"},{"username":"user","password":"1234","role":"User"}]');
+    }
+    function setUsers(users) {
+        localStorage.setItem('users', JSON.stringify(users));
+    }
+    function renderUserList() {
+        const users = getUsers();
+        const tbody = document.getElementById('userList');
+        tbody.innerHTML = '';
+        users.forEach((u, idx) => {
+            tbody.innerHTML += `<tr><td>${u.username}</td><td>${u.role}</td><td>` +
+                (u.username !== 'admin' ?
+                `<button onclick="editUser('${u.username}')">แก้ไข</button> <button onclick="deleteUser('${u.username}')">ลบ</button>` :
+                `<button disabled>แก้ไข</button> <button disabled>ลบ</button>`) +
+                `</td></tr>`;
+        });
+    }
+    document.getElementById('addUserForm').onsubmit = function(e) {
+        e.preventDefault();
+        const username = document.getElementById('newUsername').value.trim();
+        const password = document.getElementById('newPassword').value;
+        const users = getUsers();
+        const msg = document.getElementById('addUserMessage');
+        if (users.find(u => u.username === username)) {
+            msg.textContent = 'Username นี้ถูกใช้แล้ว';
+            msg.style.color = '#d32f2f';
+            return;
+        }
+        users.push({username, password, role: 'User'});
+        setUsers(users);
+        msg.textContent = 'สร้างผู้ใช้ใหม่สำเร็จ!';
+        msg.style.color = '#0078d7';
+        renderUserList();
+        this.reset();
+    };
+    // Render user list on open
+    document.getElementById('userSystemMenu').onclick = function() {
+        document.getElementById('userSystemSection').style.display = 'block';
+        renderUserList();
+    };
+    function getNotifications() {
+        return JSON.parse(localStorage.getItem('notifications') || '[]');
+    }
+    function setNotifications(n) {
+        localStorage.setItem('notifications', JSON.stringify(n));
+    }
+    document.getElementById('notifyForm').onsubmit = function(e) {
+        e.preventDefault();
+        const msg = document.getElementById('notifyMsg').value.trim();
+        if (!msg) return;
+        const noti = getNotifications();
+        noti.push({msg, date: new Date().toLocaleString()});
+        setNotifications(noti);
+        document.getElementById('notifyStatus').textContent = 'ส่งแจ้งเตือนสำเร็จ!';
+        document.getElementById('notifyStatus').style.color = '#0078d7';
+        this.reset();
+    };
+    function getProducts() {
+        return JSON.parse(localStorage.getItem('products') || '[]');
+    }
+    function setProducts(p) {
+        localStorage.setItem('products', JSON.stringify(p));
+    }
+    function renderAdminProductList() {
+        const products = getProducts();
+        const tbody = document.getElementById('adminProductList');
+        tbody.innerHTML = '';
+        products.forEach((p, idx) => {
+            tbody.innerHTML += `<tr><td>${p.name}</td><td>${p.qty}</td><td>${p.price || '-'} </td><td>${p.detail || '-'}</td><td>${p.img ? `<img src='${p.img}'>` : '-'}</td><td><button onclick="editProduct(${idx})">แก้ไข</button> <button onclick="deleteProduct(${idx})">ลบ</button></td></tr>`;
+        });
+    }
+    function editProduct(idx) {
+        const products = getProducts();
+        const p = products[idx];
+        document.getElementById('editProductForm').style.display = 'block';
+        document.getElementById('editProductName').value = p.name;
+        document.getElementById('editProductQty').value = p.qty;
+        document.getElementById('editProductPrice').value = p.price || '';
+        document.getElementById('editProductDetail').value = p.detail || '';
+        document.getElementById('editProductImg').value = p.img || '';
+        window._editingProductIdx = idx;
+    }
+    function saveProductEdit() {
+        event.preventDefault();
+        const products = getProducts();
+        const idx = window._editingProductIdx;
+        if (idx === undefined) return;
+        products[idx].qty = parseInt(document.getElementById('editProductQty').value);
+        products[idx].price = document.getElementById('editProductPrice').value;
+        products[idx].detail = document.getElementById('editProductDetail').value;
+        products[idx].img = document.getElementById('editProductImg').value;
+        setProducts(products);
+        renderAdminProductList();
+        document.getElementById('editProductForm').style.display = 'none';
+        showProductNotify('บันทึกการแก้ไขสินค้าเรียบร้อย!');
+    }
+    function cancelProductEdit() {
+        event.preventDefault();
+        document.getElementById('editProductForm').style.display = 'none';
+    }
+    function deleteProduct(idx) {
+        if (!confirm('ต้องการลบสินค้านี้จริงหรือไม่?')) return;
+        let products = getProducts();
+        products.splice(idx, 1);
+        setProducts(products);
+        renderAdminProductList();
+        showProductNotify('ลบสินค้าเรียบร้อย!');
+    }
+    function showProductNotify(msg) {
+        const el = document.getElementById('productNotifyMsg');
+        el.textContent = msg;
+        el.style.color = '#0078d7';
+        el.style.marginTop = '10px';
+        // Save product notification for user
+        let productNoti = JSON.parse(localStorage.getItem('productNotifications') || '[]');
+        productNoti.push({msg, date: new Date().toLocaleString()});
+        localStorage.setItem('productNotifications', JSON.stringify(productNoti));
+        setTimeout(() => { el.textContent = ''; }, 2000);
+    }
+    document.getElementById('adminAddProductForm').onsubmit = async function(e) {
+        e.preventDefault();
+        const name = document.getElementById('adminProductName').value.trim();
+        const qty = parseInt(document.getElementById('adminProductQty').value);
+        const price = document.getElementById('adminProductPrice').value;
+        const detail = document.getElementById('adminProductDetail').value;
+        const imgUrl = document.getElementById('adminProductImg').value;
+        const imgFile = document.getElementById('adminProductImgFile').files[0];
+        let img = imgUrl;
+        if (imgFile) {
+            img = await new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = e => resolve(e.target.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(imgFile);
+            });
+        }
+        const msg = document.getElementById('adminAddProductMsg');
+        if (!name || qty < 1) return;
+        let products = getProducts();
+        const exist = products.find(p => p.name === name);
+        if (exist) {
+            exist.qty += qty;
+            if (price) exist.price = price;
+            if (detail) exist.detail = detail;
+            if (img) exist.img = img;
+            msg.textContent = 'เพิ่มจำนวนสินค้าเดิมสำเร็จ!';
+            msg.style.color = '#0078d7';
+        } else {
+            products.push({name, qty, price, detail, img});
+            msg.textContent = 'เพิ่มสินค้าใหม่สำเร็จ!';
+            msg.style.color = '#0078d7';
+        }
+        setProducts(products);
+        renderAdminProductList();
+        this.reset();
+    };
+    function getRepairs() {
+        return JSON.parse(localStorage.getItem('repairs') || '[]');
+    }
+    function setRepairs(r) {
+        localStorage.setItem('repairs', JSON.stringify(r));
+    }
+    function renderAdminRepairList() {
+        const repairs = getRepairs();
+        const tbody = document.getElementById('adminRepairList');
+        tbody.innerHTML = '';
+        repairs.forEach((r, idx) => {
+            tbody.innerHTML += `<tr><td>${r.name}</td><td>${r.date}</td><td>${r.time}</td><td>${r.detail}</td><td>${r.status}</td><td><select onchange="updateRepairStatus(${idx}, this.value)"><option value="รอดำเนินการ" ${r.status==='รอดำเนินการ'?'selected':''}>รอดำเนินการ</option><option value="กำลังดำเนินการ" ${r.status==='กำลังดำเนินการ'?'selected':''}>กำลังดำเนินการ</option><option value="เสร็จสิ้น" ${r.status==='เสร็จสิ้น'?'selected':''}>เสร็จสิ้น</option></select></td></tr>`;
+        });
+    }
+    function updateRepairStatus(idx, status) {
+        let repairs = getRepairs();
+        repairs[idx].status = status;
+        setRepairs(repairs);
+        renderAdminRepairList();
+        document.getElementById('adminRepairMsg').textContent = 'อัปเดตสถานะงานซ่อมเรียบร้อย!';
+        setTimeout(()=>{document.getElementById('adminRepairMsg').textContent='';}, 1500);
+        // แจ้งเตือนสถานะใหม่ไปยัง user
+        let repairNoti = JSON.parse(localStorage.getItem('repairNotifications') || '[]');
+        const r = repairs[idx];
+        repairNoti.push({msg: `งานซ่อมของ ${r.name} (${r.detail}) อัปเดตสถานะเป็น: ${status}`, date: new Date().toLocaleString()});
+        localStorage.setItem('repairNotifications', JSON.stringify(repairNoti));
+    }
+    // แสดงรายการงานซ่อมเมื่อโหลดหน้า admin
+    window.onload = function() {
+        showAdminSection('adminProductSection');
+        renderAdminRepairList();
+    };
+    document.getElementById('adminSendRepairForm').onsubmit = function(e) {
+        e.preventDefault();
+        const name = document.getElementById('adminRepairName').value.trim();
+        const date = document.getElementById('adminRepairDate').value;
+        const time = document.getElementById('adminRepairTime').value;
+        const detail = document.getElementById('adminRepairDetail').value;
+        const location = document.getElementById('adminRepairLocation').value;
+        const phone = document.getElementById('adminRepairPhone').value;
+        let repairs = JSON.parse(localStorage.getItem('repairs') || '[]');
+        repairs.push({name, date, time, detail, location, phone, status: 'รอดำเนินการ'});
+        localStorage.setItem('repairs', JSON.stringify(repairs));
+        document.getElementById('adminSendRepairMsg').textContent = 'แจ้งงานซ่อมสำเร็จ!';
+        document.getElementById('adminSendRepairMsg').style.color = '#0078d7';
+        // แจ้งเตือนแผนงช่าง
+        let techNoti = JSON.parse(localStorage.getItem('technicianNotifications') || '[]');
+        techNoti.push({msg: `มีงานซ่อมใหม่จากแอดมิน: ${detail} (${location})`, date: new Date().toLocaleString()});
+        localStorage.setItem('technicianNotifications', JSON.stringify(techNoti));
+        this.reset();
+    };
+    function getAdminSalesCustomers() {
+        return JSON.parse(localStorage.getItem('adminSalesCustomers') || '[]');
+    }
+    function setAdminSalesCustomers(list) {
+        localStorage.setItem('adminSalesCustomers', JSON.stringify(list));
+    }
+    let editingSalesCustomerIdx = null;
+    function renderAdminSalesCustomerList() {
+        const list = getAdminSalesCustomers();
+        const tbody = document.getElementById('adminSalesCustomerList');
+        tbody.innerHTML = '';
+        list.forEach((c, idx) => {
+            tbody.innerHTML += `<tr><td>${c.name}</td><td>${c.datetime}</td><td>${c.address}</td><td>${c.phone}</td><td>${c.status}</td><td>${c.photo ? `<img src='${c.photo}' style='width:40px;height:40px;object-fit:cover;border-radius:6px;'>` : '-'}</td><td><button onclick="editAdminSalesCustomer(${idx})">แก้ไข</button> <button onclick="deleteAdminSalesCustomer(${idx})">ลบ</button></td></tr>`;
+        });
+    }
+    window.editAdminSalesCustomer = function(idx) {
+        const list = getAdminSalesCustomers();
+        const c = list[idx];
+        editingSalesCustomerIdx = idx;
+        document.getElementById('editCustomerName').value = c.name;
+        document.getElementById('editCustomerDatetime').value = c.datetime;
+        document.getElementById('editCustomerAddress').value = c.address;
+        document.getElementById('editCustomerPhone').value = c.phone;
+        document.getElementById('editCustomerStatus').value = c.status;
+        document.getElementById('editSalesCustomerForm').style.display = 'block';
+    };
+    window.saveEditSalesCustomer = async function() {
+        const list = getAdminSalesCustomers();
+        if(editingSalesCustomerIdx === null) return;
+        const name = document.getElementById('editCustomerName').value.trim();
+        const datetime = document.getElementById('editCustomerDatetime').value;
+        const address = document.getElementById('editCustomerAddress').value.trim();
+        const phone = document.getElementById('editCustomerPhone').value.trim();
+        const status = document.getElementById('editCustomerStatus').value;
+        const photoFile = document.getElementById('editCustomerPhoto').files[0];
+        let photo = list[editingSalesCustomerIdx].photo;
+        if (photoFile) {
+            photo = await new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = e => resolve(e.target.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(photoFile);
+            });
+        }
+        list[editingSalesCustomerIdx] = {name, datetime, address, phone, status, photo};
+        setAdminSalesCustomers(list);
+        renderAdminSalesCustomerList();
+        document.getElementById('editSalesCustomerForm').style.display = 'none';
+        editingSalesCustomerIdx = null;
+    };
+    window.cancelEditSalesCustomer = function() {
+        document.getElementById('editSalesCustomerForm').style.display = 'none';
+        editingSalesCustomerIdx = null;
+    };
+    // แสดงข้อมูลลูกค้าจากเซลส์เมื่อเลือก section
+    document.querySelector('.admin-nav-btn[onclick*="adminSalesCustomerSection"]').onclick = function() {
+        showAdminSection('adminSalesCustomerSection');
+        renderAdminSalesCustomerList();
+    };
+    </script>
+    <!-- เพิ่มฟีเจอร์หลังบ้านที่ต้องการได้ที่นี่ -->
+</body>
+</html>

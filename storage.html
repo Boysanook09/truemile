@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Storage</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="user-bg-glow"></div>
+    <header class="user-header">
+        <h1>ทรูสไมล์ มาร์เก็ตติ้ง</h1>
+        <nav class="user-nav">
+            <button class="user-nav-btn" id="technician">แผนกช่าง</button>
+            <button class="user-nav-btn" id="credit">แผนกเครดิต</button>
+            <button class="user-nav-btn" id="sales">แผนกเซลส์</button>
+            <button class="user-nav-btn" id="settings">ตั้งค่า</button>
+            <button class="user-nav-btn" id="stockMenu">สต็อกสินค้า</button>
+            <button class="user-nav-btn" id="productShowcaseMenu">แสดงสินค้า</button>
+        </nav>
+    </header>
+    <main class="user-main">
+        <!-- Dashboard Section -->
+        <section id="dashboardSection" class="modern-card dashboard-section">
+            <h2 class="gradient-title"><span>📊</span> Dashboard สรุปสถิติ</h2>
+            <div id="dashboardStats" class="dashboard-stats"></div>
+        </section>
+        <h1>Data Storage Page</h1>
+        <p>Welcome! You are now on the data storage page.</p>
+        <!-- Add your data storage UI here -->
+        <div class="glow glow1"></div>
+        <div class="glow glow2"></div>
+        <div class="glow glow3"></div>
+        <div id="notificationBar" class="notification-bar"></div>
+        <audio id="notiSound" src="https://cdn.pixabay.com/audio/2022/07/26/audio_124bfae5b2.mp3" preload="auto"></audio>
+        <div id="popupNotification" class="popup-notification"></div>
+        <div id="stockSection" class="stock-section">
+            <h2>สต็อกสินค้า</h2>
+            <form id="addProductForm">
+                <label>ชื่อสินค้า: <input type="text" id="productName" required></label>
+                <label>จำนวน: <input type="number" id="productQty" required min="1"></label>
+                <label>ราคา: <input type="number" id="productPrice" min="0" step="0.01"></label>
+                <label>รายละเอียด: <input type="text" id="productDetail"></label>
+                <label>รูปภาพ (อัปโหลด): <input type="file" id="productImgFile" accept="image/*"></label>
+                <label>รูปภาพ (URL): <input type="text" id="productImg"></label>
+                <button type="submit">เพิ่มสินค้า</button>
+            </form>
+            <div id="addProductMsg"></div>
+            <h3>รายการสินค้า</h3>
+            <input type="text" id="searchProduct" placeholder="ค้นหาสินค้า..." class="search-input">
+            <table id="productTable">
+                <thead><tr><th>ชื่อสินค้า</th><th>จำนวนคงเหลือ</th><th>ตัดสต็อก</th></tr></thead>
+                <tbody id="productList"></tbody>
+            </table>
+        </div>
+        <div id="productShowcaseSection" class="product-showcase-section">
+            <h2>แสดงสินค้า</h2>
+            <input type="text" id="searchShowcase" placeholder="ค้นหาสินค้า..." class="search-input">
+            <div id="productShowcaseList" class="product-showcase-list"></div>
+        </div>
+        <div id="technicianSection" class="technician-section">
+            <h2>แบบฟอร์มแจ้งซ่อม (แผนกช่าง)</h2>
+            <form id="repairForm">
+                <label>ชื่อผู้แจ้ง: <input type="text" id="repairName" required></label>
+                <label>วันที่: <input type="date" id="repairDate" required></label>
+                <label>เวลา: <input type="time" id="repairTime" required></label>
+                <label>รายละเอียดปัญหา: <input type="text" id="repairDetail" required></label>
+                <label>สถานที่: <input type="text" id="repairLocation"></label>
+                <label>เบอร์ติดต่อ: <input type="tel" id="repairPhone"></label>
+                <button type="submit">แจ้งซ่อม</button>
+            </form>
+            <div id="repairMsg"></div>
+            <h3>รายการแจ้งซ่อม</h3>
+            <table id="repairTable">
+                <thead><tr><th>ชื่อผู้แจ้ง</th><th>วันที่</th><th>เวลา</th><th>รายละเอียด</th><th>สถานะ</th></tr></thead>
+                <tbody id="repairList"></tbody>
+            </table>
+            <h3>รายการข้อมูลเพิ่มเติม</h3>
+            <table id="extraTable">
+                <thead><tr><th>ประเภทงาน</th><th>สถานที่</th><th>เบอร์ติดต่อ</th><th>วันที่บันทึก</th><th>เลือกใช้</th></tr></thead>
+                <tbody id="extraList"></tbody>
+            </table>
+            <form id="technicianExtraForm" class="technician-extra-form">
+                <label>ประเภทงาน: 
+                    <select id="extraType" required>
+                        <option value="">--เลือกประเภทงาน--</option>
+                        <option value="ไฟฟ้า">ไฟฟ้า</option>
+                        <option value="ประปา">ประปา</option>
+                        <option value="เครื่องใช้ไฟฟ้า">เครื่องใช้ไฟฟ้า</option>
+                        <option value="อื่น ๆ">อื่น ๆ</option>
+                    </select>
+                </label>
+                <label>สถานที่: <input type="text" id="extraLocation" required></label>
+                <label>เบอร์ติดต่อ: <input type="tel" id="extraPhone" required></label>
+                <button type="submit">บันทึกข้อมูลเพิ่มเติม</button>
+            </form>
+            <div id="extraFormMsg"></div>
+        </div>
+        <div id="creditSection" class="credit-section modern-card">
+            <h2 class="gradient-title"><span class="icon-credit">💳</span> ระบบตารางงานเครดิตลูกค้า</h2>
+            <form id="creditCustomerForm" class="modern-form">
+                <div class="form-row">
+                    <label>ชื่อลูกค้า
+                        <input type="text" id="creditCustomerName" required placeholder="กรอกชื่อลูกค้า">
+                    </label>
+                    <label>ที่อยู่
+                        <input type="text" id="creditCustomerAddress" required placeholder="กรอกที่อยู่ลูกค้า">
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label>เบอร์โทร
+                        <input type="tel" id="creditCustomerPhone" required placeholder="กรอกเบอร์โทร">
+                    </label>
+                    <label>ยอดผ่อนชำระต่อเดือน (บาท)
+                        <input type="number" id="creditInstallment" required min="1" placeholder="เช่น 2000">
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label>จำนวนงวด
+                        <input type="number" id="creditTerm" required min="1" placeholder="เช่น 12">
+                    </label>
+                    <label>วันเริ่มต้นงวด
+                        <input type="date" id="creditStartDate" required>
+                    </label>
+                </div>
+                <button type="submit" class="modern-btn">เพิ่มข้อมูลเครดิตลูกค้า</button>
+            </form>
+            <div id="creditCustomerMsg" class="msg-anim"></div>
+            <h3 class="gradient-title">ตารางงานเครดิตลูกค้า</h3>
+            <table id="creditCustomerTable" class="modern-table">
+                <thead><tr><th>ชื่อ</th><th>ที่อยู่</th><th>เบอร์</th><th>ยอด/งวด</th><th>จำนวนงวด</th><th>วันเริ่ม</th><th>ยอดรวม</th><th>ตารางผ่อน</th></tr></thead>
+                <tbody id="creditCustomerList"></tbody>
+            </table>
+            <h3 class="gradient-title">รายงานการเก็บงวด</h3>
+            <div id="creditReportWindow" class="modern-card credit-report-window">
+                <div id="creditReportContent">กรุณาเลือกตารางผ่อนของลูกค้าเพื่อดูรายงาน</div>
+            </div>
+        </div>
+        <div id="salesSection" class="sales-section modern-card">
+            <h2 class="gradient-title"><span class="icon-sales">🛒</span> แบบฟอร์มบันทึกข้อมูลลูกค้า (แผนงเซลส์)</h2>
+            <form id="salesCustomerForm" class="modern-form">
+                <div class="form-row">
+                    <label>ชื่อลูกค้า
+                        <input type="text" id="customerName" required placeholder="กรอกชื่อลูกค้า">
+                    </label>
+                    <label>วัน-เวลา
+                        <input type="datetime-local" id="customerDatetime" required>
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label>ที่อยู่
+                        <input type="text" id="customerAddress" required placeholder="กรอกที่อยู่ลูกค้า">
+                    </label>
+                    <label>เบอร์โทร
+                        <input type="tel" id="customerPhone" required placeholder="กรอกเบอร์โทร">
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label>สถานะ
+                        <select id="customerStatus" required>
+                            <option value="ใหม่">ใหม่</option>
+                            <option value="ติดตาม">ติดตาม</option>
+                            <option value="ปิดการขาย">ปิดการขาย</option>
+                        </select>
+                    </label>
+                    <label>รูปถ่าย
+                        <input type="file" id="customerPhoto" accept="image/*">
+                    </label>
+                </div>
+                <button type="submit" class="modern-btn">บันทึกข้อมูลลูกค้า</button>
+            </form>
+            <div id="salesCustomerMsg" class="msg-anim"></div>
+            <h3 class="gradient-title">รายการลูกค้า</h3>
+            <table id="salesCustomerTable" class="modern-table">
+                <thead><tr><th>ชื่อ</th><th>วัน-เวลา</th><th>ที่อยู่</th><th>เบอร์</th><th>สถานะ</th><th>รูปถ่าย</th></tr></thead>
+                <tbody id="salesCustomerList"></tbody>
+            </table>
+        </div>
+        <div id="settingsSection" class="settings-section">
+            <h2>ตั้งค่าระบบ</h2>
+            <form id="appSettingsForm">
+                <label>ธีมสีหลัก:
+                    <select id="mainThemeColor">
+                        <option value="#0078d7">ฟ้า</option>
+                        <option value="#e52e71">ชมพู</option>
+                        <option value="#ff8a00">ส้ม</option>
+                        <option value="#74ebd5">ฟ้าอ่อน</option>
+                        <option value="#181c2b">เข้ม</option>
+                    </select>
+                </label>
+                <label>เปิด/ปิดแอนิเมชั่น:
+                    <select id="toggleAnimation">
+                        <option value="on">เปิด</option>
+                        <option value="off">ปิด</option>
+                    </select>
+                </label>
+                <label>ขนาดตัวอักษร:
+                    <select id="fontSize">
+                        <option value="normal">ปกติ</option>
+                        <option value="large">ใหญ่</option>
+                        <option value="xlarge">ใหญ่มาก</option>
+                    </select>
+                </label>
+                <button type="submit">บันทึกการตั้งค่า</button>
+            </form>
+            <div id="settingsMsg"></div>
+        </div>
+    </main>
+    <script>
+        function showNotificationBar() {
+            const noti = JSON.parse(localStorage.getItem('notifications') || '[]');
+            if (noti.length > 0) {
+                const last = noti[noti.length-1];
+                const bar = document.getElementById('notificationBar');
+                bar.innerHTML = `<b>ข่าวสารล่าสุด:</b> ${last.msg} <span style='font-size:13px;color:#888;'>(${last.date})</span>`;
+                bar.style.display = 'block';
+            }
+        }
+        function getProducts() {
+            return JSON.parse(localStorage.getItem('products') || '[]');
+        }
+        function setProducts(p) {
+            localStorage.setItem('products', JSON.stringify(p));
+        }
+        function renderProductList(filter = '') {
+            const products = getProducts();
+            const tbody = document.getElementById('productList');
+            tbody.innerHTML = '';
+            products.filter(p => p.name.includes(filter)).forEach((p, idx) => {
+                tbody.innerHTML += `<tr><td>${p.name}</td><td>${p.qty}</td><td><button onclick="cutStock(${idx})">ตัดสต็อก</button></td></tr>`;
+            });
+        }
+        document.getElementById('addProductForm').onsubmit = async function(e) {
+            e.preventDefault();
+            const name = document.getElementById('productName').value.trim();
+            const qty = parseInt(document.getElementById('productQty').value);
+            const price = document.getElementById('productPrice').value;
+            const detail = document.getElementById('productDetail').value;
+            const imgUrl = document.getElementById('productImg').value;
+            const imgFile = document.getElementById('productImgFile').files[0];
+            let img = imgUrl;
+            if (imgFile) {
+                img = await new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = e => resolve(e.target.result);
+                    reader.onerror = reject;
+                    reader.readAsDataURL(imgFile);
+                });
+            }
+            const msg = document.getElementById('addProductMsg');
+            if (!name || qty < 1) return;
+            let products = getProducts();
+            const exist = products.find(p => p.name === name);
+            if (exist) {
+                exist.qty += qty;
+                if (price) exist.price = price;
+                if (detail) exist.detail = detail;
+                if (img) exist.img = img;
+                msg.textContent = 'เพิ่มจำนวนสินค้าเดิมสำเร็จ!';
+                msg.style.color = '#0078d7';
+            } else {
+                products.push({name, qty, price, detail, img});
+                msg.textContent = 'เพิ่มสินค้าใหม่สำเร็จ!';
+                msg.style.color = '#0078d7';
+            }
+            setProducts(products);
+            renderProductList();
+            this.reset();
+        };
+        function cutStock(idx) {
+            let products = getProducts();
+            const qty = prompt('จำนวนที่ต้องการตัดสต็อก:', '1');
+            const n = parseInt(qty);
+            if (!n || n < 1) return;
+            if (products[idx].qty < n) {
+                alert('จำนวนสินค้าไม่พอ!');
+                return;
+            }
+            products[idx].qty -= n;
+            setProducts(products);
+            renderProductList();
+        }
+        // เมนูแผนงต่าง ๆ
+        document.getElementById('technician').onclick = function() {
+            hideAllSections();
+            document.getElementById('technicianSection').style.display = 'block';
+            renderRepairList();
+            renderExtraList && renderExtraList();
+        };
+        document.getElementById('credit').onclick = function() {
+            hideAllSections();
+            document.getElementById('creditSection').style.display = 'block';
+            renderCreditCustomerList();
+        };
+        document.getElementById('sales').onclick = function() {
+            hideAllSections();
+            document.getElementById('salesSection').style.display = 'block';
+            renderSalesCustomerList();
+        };
+        document.getElementById('settings').onclick = function() {
+            hideAllSections();
+            document.getElementById('settingsSection').style.display = 'block';
+        };
+        document.getElementById('stockMenu').onclick = function() {
+            hideAllSections();
+            document.getElementById('stockSection').style.display = 'block';
+            renderProductList && renderProductList();
+        };
+        document.getElementById('productShowcaseMenu').onclick = function() {
+            hideAllSections();
+            document.getElementById('productShowcaseSection').style.display = 'block';
+            renderProductShowcase && renderProductShowcase();
+        };
+        // ฟังก์ชันซ่อนทุก section
+        function hideAllSections() {
+            const sections = [
+                'technicianSection','creditSection','salesSection','settingsSection',
+                'stockSection','productShowcaseSection'
+            ];
+            sections.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.style.display = 'none';
+            });
+        }
+        function renderProductShowcase(filter = '') {
+            const products = getProducts();
+            const showcase = document.getElementById('productShowcaseList');
+            showcase.innerHTML = '';
+            products.filter(p => p.name.includes(filter)).forEach((p, idx) => {
+                showcase.innerHTML += `
+                    <div class='product-card'>
+                        <div class='product-img'>${p.img ? `<img src='${p.img}' alt='${p.name}'>` : '<span class="no-img">ไม่มีรูป</span>'}</div>
+                        <div class='product-info'>
+                            <h3>${p.name}</h3>
+                            <p>จำนวนคงเหลือ: ${p.qty}</p>
+                            <p>ราคา: ${p.price ? p.price + ' บาท' : '-'} </p>
+                            <p>รายละเอียด: ${p.detail || '-'}</p>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+        document.getElementById('searchProduct').oninput = function() {
+            renderProductList(this.value.trim());
+        };
+        document.getElementById('searchShowcase').oninput = function() {
+            renderProductShowcase(this.value.trim());
+        };
+        function getRepairs() {
+            return JSON.parse(localStorage.getItem('repairs') || '[]');
+        }
+        function setRepairs(r) {
+            localStorage.setItem('repairs', JSON.stringify(r));
+        }
+        function renderRepairList() {
+            const repairs = getRepairs();
+            const tbody = document.getElementById('repairList');
+            tbody.innerHTML = '';
+            repairs.forEach((r, idx) => {
+                tbody.innerHTML += `<tr><td>${r.name}</td><td>${r.date}</td><td>${r.time}</td><td>${r.detail}</td><td>${r.status}</td></tr>`;
+            });
+        }
+        document.getElementById('repairForm').onsubmit = function(e) {
+            e.preventDefault();
+            const name = document.getElementById('repairName').value.trim();
+            const date = document.getElementById('repairDate').value;
+            const time = document.getElementById('repairTime').value;
+            const detail = document.getElementById('repairDetail').value;
+            const msg = document.getElementById('repairMsg');
+            let repairs = getRepairs();
+            repairs.push({name, date, time, detail, status: 'รอดำเนินการ'});
+            setRepairs(repairs);
+            msg.textContent = 'แจ้งซ่อมสำเร็จ!';
+            msg.style.color = '#0078d7';
+            renderRepairList();
+            this.reset();
+        };
+        document.getElementById('technicianExtraForm').onsubmit = function(e) {
+            e.preventDefault();
+            const type = document.getElementById('extraType').value;
+            const location = document.getElementById('extraLocation').value.trim();
+            const phone = document.getElementById('extraPhone').value.trim();
+            let extras = JSON.parse(localStorage.getItem('technicianExtras') || '[]');
+            extras.push({type, location, phone, date: new Date().toLocaleString()});
+            localStorage.setItem('technicianExtras', JSON.stringify(extras));
+            document.getElementById('extraFormMsg').textContent = 'บันทึกข้อมูลเพิ่มเติมสำเร็จ!';
+            document.getElementById('extraFormMsg').style.color = '#0078d7';
+            this.reset();
+        };
+        function renderExtraList() {
+            const extras = JSON.parse(localStorage.getItem('technicianExtras') || '[]');
+            const tbody = document.getElementById('extraList');
+            tbody.innerHTML = '';
+            extras.forEach((e, idx) => {
+                tbody.innerHTML += `<tr><td>${e.type}</td><td>${e.location}</td><td>${e.phone}</td><td>${e.date}</td><td><button onclick="useExtra(${idx})">เลือกใช้</button></td></tr>`;
+            });
+        }
+        window.useExtra = function(idx) {
+            const extras = JSON.parse(localStorage.getItem('technicianExtras') || '[]');
+            const e = extras[idx];
+            // Autofill multiple fields in repair form
+            document.getElementById('repairDetail').value = `ประเภทงาน: ${e.type}`;
+            if(document.getElementById('repairLocation')) {
+                document.getElementById('repairLocation').value = e.location;
+            }
+            if(document.getElementById('repairPhone')) {
+                document.getElementById('repairPhone').value = e.phone;
+            }
+        };
+        // เรียก renderExtraList เมื่อเปิด technicianSection
+        const oldTechClick = document.getElementById('technician').onclick;
+        document.getElementById('technician').onclick = function() {
+            document.getElementById('technicianSection').style.display = 'block';
+            renderRepairList();
+            renderExtraList();
+            if (oldTechClick) oldTechClick();
+        };
+        // โหลดค่าตั้งค่า
+        function loadAppSettings() {
+            const settings = JSON.parse(localStorage.getItem('appSettings') || '{}');
+            if(settings.mainThemeColor) document.documentElement.style.setProperty('--main-theme', settings.mainThemeColor);
+            if(settings.toggleAnimation === 'off') {
+                document.body.classList.add('no-anim');
+            } else {
+                document.body.classList.remove('no-anim');
+            }
+            if(settings.fontSize) {
+                document.body.classList.remove('font-large','font-xlarge');
+                if(settings.fontSize === 'large') document.body.classList.add('font-large');
+                if(settings.fontSize === 'xlarge') document.body.classList.add('font-xlarge');
+            }
+            // ตั้งค่าฟอร์ม
+            document.getElementById('mainThemeColor').value = settings.mainThemeColor || '#0078d7';
+            document.getElementById('toggleAnimation').value = settings.toggleAnimation || 'on';
+            document.getElementById('fontSize').value = settings.fontSize || 'normal';
+        }
+        document.getElementById('appSettingsForm').onsubmit = function(e) {
+            e.preventDefault();
+            const mainThemeColor = document.getElementById('mainThemeColor').value;
+            const toggleAnimation = document.getElementById('toggleAnimation').value;
+            const fontSize = document.getElementById('fontSize').value;
+            const settings = {mainThemeColor, toggleAnimation, fontSize};
+            localStorage.setItem('appSettings', JSON.stringify(settings));
+            loadAppSettings();
+            document.getElementById('settingsMsg').textContent = 'บันทึกการตั้งค่าสำเร็จ!';
+            setTimeout(()=>{document.getElementById('settingsMsg').textContent='';}, 2000);
+        };
+        // โหลดค่าตั้งค่าเมื่อเข้าแอพ
+        loadAppSettings();
+        function getSalesCustomers() {
+            return JSON.parse(localStorage.getItem('salesCustomers') || '[]');
+        }
+        function setSalesCustomers(list) {
+            localStorage.setItem('salesCustomers', JSON.stringify(list));
+        }
+        function renderSalesCustomerList() {
+            const list = getSalesCustomers();
+            const tbody = document.getElementById('salesCustomerList');
+            tbody.innerHTML = '';
+            list.forEach(c => {
+                tbody.innerHTML += `<tr><td>${c.name}</td><td>${c.datetime}</td><td>${c.address}</td><td>${c.phone}</td><td>${c.status}</td><td>${c.photo ? `<img src='${c.photo}' style='width:40px;height:40px;object-fit:cover;border-radius:6px;'>` : '-'}</td></tr>`;
+            });
+        }
+        document.getElementById('salesCustomerForm').onsubmit = async function(e) {
+            e.preventDefault();
+            const name = document.getElementById('customerName').value.trim();
+            const datetime = document.getElementById('customerDatetime').value;
+            const address = document.getElementById('customerAddress').value.trim();
+            const phone = document.getElementById('customerPhone').value.trim();
+            const status = document.getElementById('customerStatus').value;
+            const photoFile = document.getElementById('customerPhoto').files[0];
+            let photo = '';
+            if (photoFile) {
+                photo = await new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = e => resolve(e.target.result);
+                    reader.onerror = reject;
+                    reader.readAsDataURL(photoFile);
+                });
+            }
+            let list = getSalesCustomers();
+            list.push({name, datetime, address, phone, status, photo});
+            setSalesCustomers(list);
+            renderSalesCustomerList();
+            document.getElementById('salesCustomerMsg').textContent = 'บันทึกข้อมูลลูกค้าสำเร็จ!';
+            document.getElementById('salesCustomerMsg').style.color = '#0078d7';
+            this.reset();
+            // ส่งข้อมูลไปแอดมิน
+            let adminSales = JSON.parse(localStorage.getItem('adminSalesCustomers') || '[]');
+            adminSales.push({name, datetime, address, phone, status, photo});
+            localStorage.setItem('adminSalesCustomers', JSON.stringify(adminSales));
+        };
+        // --- Credit Customer System ---
+        function getCreditCustomers() {
+            return JSON.parse(localStorage.getItem('creditCustomers') || '[]');
+        }
+        function setCreditCustomers(list) {
+            localStorage.setItem('creditCustomers', JSON.stringify(list));
+        }
+        function renderCreditCustomerList() {
+            const list = getCreditCustomers();
+            const tbody = document.getElementById('creditCustomerList');
+            tbody.innerHTML = '';
+            list.forEach((c, idx) => {
+                const total = c.installment * c.term;
+                tbody.innerHTML += `<tr>
+                    <td>${c.name}</td>
+                    <td>${c.address}</td>
+                    <td>${c.phone}</td>
+                    <td>${c.installment.toLocaleString()} บาท</td>
+                    <td>${c.term}</td>
+                    <td>${c.startDate}</td>
+                    <td>${total.toLocaleString()} บาท</td>
+                    <td><button class='modern-btn' onclick='showInstallmentTable(${idx})'>ดูตาราง</button></td>
+                </tr>`;
+            });
+        }
+        document.getElementById('creditCustomerForm').onsubmit = function(e) {
+            e.preventDefault();
+            const name = document.getElementById('creditCustomerName').value.trim();
+            const address = document.getElementById('creditCustomerAddress').value.trim();
+            const phone = document.getElementById('creditCustomerPhone').value.trim();
+            const installment = parseFloat(document.getElementById('creditInstallment').value);
+            const term = parseInt(document.getElementById('creditTerm').value);
+            const startDate = document.getElementById('creditStartDate').value;
+            if (!name || !address || !phone || !installment || !term || !startDate) return;
+            let list = getCreditCustomers();
+            list.push({name, address, phone, installment, term, startDate, payments: []});
+            setCreditCustomers(list);
+            renderCreditCustomerList();
+            document.getElementById('creditCustomerMsg').textContent = 'เพิ่มข้อมูลเครดิตลูกค้าสำเร็จ!';
+            document.getElementById('creditCustomerMsg').style.color = '#0078d7';
+            this.reset();
+        };
+        function showInstallmentTable(idx) {
+            const list = getCreditCustomers();
+            const c = list[idx];
+            const start = new Date(c.startDate);
+            let rows = '';
+            for (let i = 0; i < c.term; i++) {
+                const due = new Date(start);
+                due.setMonth(due.getMonth() + i);
+                const paid = c.payments && c.payments[i] ? c.payments[i].paid : false;
+                const paidDate = c.payments && c.payments[i] ? c.payments[i].date : '';
+                rows += `<tr${paid ? " class='paid-row'" : ''}>
+                    <td>${i+1}</td>
+                    <td>${due.toLocaleDateString()}</td>
+                    <td>${c.installment.toLocaleString()} บาท</td>
+                    <td>${paid ? `<span style='color:#00b894;'>✔ ชำระแล้ว</span><br><span style='font-size:12px;color:#888;'>${paidDate}</span>` : `<button class='modern-btn' onclick='payInstallment(${idx},${i})'>บันทึกชำระ</button>`}</td>
+                </tr>`;
+            }
+            document.getElementById('creditReportContent').innerHTML = `
+                <table class='modern-table'>
+                    <thead><tr><th>งวดที่</th><th>วันครบกำหนด</th><th>ยอดชำระ</th><th>สถานะ</th></tr></thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            `;
+        }
+        function payInstallment(cidx, tidx) {
+            let list = getCreditCustomers();
+            if (!list[cidx].payments) list[cidx].payments = [];
+            list[cidx].payments[tidx] = {paid: true, date: new Date().toLocaleString()};
+            setCreditCustomers(list);
+            showInstallmentTable(cidx);
+            renderCreditCustomerList();
+        }
+        // --- Button Ripple Effect ---
+        document.querySelectorAll('.modern-btn, button, .admin-nav-btn, .user-nav-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                if (!btn.classList.contains('ripple')) return;
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                btn.style.setProperty('--ripple-x', x + 'px');
+                btn.style.setProperty('--ripple-y', y + 'px');
+                btn.classList.remove('ripple');
+                void btn.offsetWidth; // force reflow
+                btn.classList.add('ripple');
+                setTimeout(()=>btn.classList.remove('ripple'), 500);
+            });
+        });
+        // --- Table Row Highlight on Update ---
+        function highlightTableRow(row) {
+            row.classList.add('pulse-row');
+            setTimeout(()=>row.classList.remove('pulse-row'), 1200);
+        }
+        // --- Real-time Search/Filter for All Tables ---
+        function addRealtimeFilter(inputId, tableId) {
+            const input = document.getElementById(inputId);
+            const table = document.getElementById(tableId);
+            if (!input || !table) return;
+            input.addEventListener('input', function() {
+                const val = input.value.toLowerCase();
+                table.querySelectorAll('tbody tr').forEach(tr => {
+                    tr.style.display = [...tr.children].some(td => td.textContent.toLowerCase().includes(val)) ? '' : 'none';
+                });
+            });
+        }
+        window.addEventListener('DOMContentLoaded', function() {
+            addRealtimeFilter('searchUser', 'userListTable');
+            addRealtimeFilter('searchProduct', 'productTable');
+            addRealtimeFilter('searchShowcase', 'productShowcaseList');
+        });
+        // --- Export Table to CSV ---
+        function exportTableToCSV(tableId, filename) {
+            const table = document.getElementById(tableId);
+            let csv = [];
+            table.querySelectorAll('tr').forEach(row => {
+                let rowData = [];
+                row.querySelectorAll('th,td').forEach(cell => {
+                    rowData.push('"' + cell.textContent.replace(/"/g, '""') + '"');
+                });
+                csv.push(rowData.join(','));
+            });
+            const blob = new Blob([csv.join('\n')], {type: 'text/csv'});
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = filename;
+            a.click();
+        }
+        // --- Dark Mode ---
+        function toggleDarkMode(on) {
+            document.body.classList.toggle('dark-mode', on);
+        }
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'd') toggleDarkMode();
+        });
+        // --- Dashboard (สรุปสถิติ) ---
+        function renderDashboard() {
+            // ตัวอย่าง: สรุปจำนวนลูกค้า, สินค้า, งานซ่อม ฯลฯ
+            const sales = JSON.parse(localStorage.getItem('salesCustomers')||'[]').length;
+            const products = JSON.parse(localStorage.getItem('products')||'[]').length;
+            const repairs = JSON.parse(localStorage.getItem('repairList')||'[]').length;
+            document.getElementById('dashboardStats').innerHTML = `
+                <div class='dashboard-card'><span>👥</span><b>ลูกค้าเซลส์</b><br>${sales} คน</div>
+                <div class='dashboard-card'><span>📦</span><b>สินค้า</b><br>${products} รายการ</div>
+                <div class='dashboard-card'><span>🛠️</span><b>งานซ่อม</b><br>${repairs} งาน</div>
+            `;
+        }
+        // --- Drag & Drop Table Rows ---
+        function enableTableDragDrop(tableId) {
+            const table = document.getElementById(tableId);
+            let dragging, startIdx;
+            table.querySelectorAll('tbody tr').forEach((row, idx) => {
+                row.draggable = true;
+                row.ondragstart = e => { dragging = row; startIdx = idx; };
+                row.ondragover = e => { e.preventDefault(); };
+                row.ondrop = e => {
+                    if (dragging && dragging !== row) {
+                        row.parentNode.insertBefore(dragging, row.nextSibling);
+                        highlightTableRow(row);
+                    }
+                };
+            });
+        }
+        // --- Autocomplete Input ---
+        function enableAutocomplete(inputId, dataList) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+            input.addEventListener('input', function() {
+                let val = input.value.toLowerCase();
+                let match = dataList.find(d => d.toLowerCase().startsWith(val));
+                if (match) input.value = match;
+            });
+        }
+    </script>
+</body>
+</html>
