@@ -409,6 +409,8 @@
             msg.style.color = '#0078d7';
         }
         setProducts(products);
+        // บันทึกข้อมูลไปยัง localStorage ฝั่ง user (stock)
+        localStorage.setItem('products', JSON.stringify(products));
         renderAdminProductList();
         this.reset();
     };

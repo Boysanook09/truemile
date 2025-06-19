@@ -366,9 +366,11 @@
             const date = document.getElementById('repairDate').value;
             const time = document.getElementById('repairTime').value;
             const detail = document.getElementById('repairDetail').value;
+            const location = document.getElementById('repairLocation') ? document.getElementById('repairLocation').value : '';
+            const phone = document.getElementById('repairPhone') ? document.getElementById('repairPhone').value : '';
             const msg = document.getElementById('repairMsg');
             let repairs = getRepairs();
-            repairs.push({name, date, time, detail, status: 'รอดำเนินการ'});
+            repairs.push({name, date, time, detail, location, phone, status: 'รอดำเนินการ'});
             setRepairs(repairs);
             msg.textContent = 'แจ้งซ่อมสำเร็จ!';
             msg.style.color = '#0078d7';

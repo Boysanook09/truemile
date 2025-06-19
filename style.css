@@ -1298,3 +1298,48 @@ body.dark-mode .msg-anim, body.dark-mode #notificationBar {
     margin-bottom: 12px;
     max-width: 250px;
 }
+
+/* --- Modern Login Animation --- */
+.login-anim-card {
+    background: rgba(255,255,255,0.13);
+    border-radius: 18px;
+    box-shadow: 0 8px 32px 0 rgba(255,255,255,0.18), 0 1.5px 0 #fff2;
+    padding: 36px 44px 32px 44px;
+    margin: 36px auto 0 auto;
+    max-width: 370px;
+    width: 90vw;
+    min-width: 260px;
+    animation: loginFadeIn 1.2s cubic-bezier(0.4,0,0.2,1);
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.login-form-anim {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    width: 100%;
+    margin-top: 12px;
+}
+.login-input-anim {
+    font-family: 'Prompt', Arial, sans-serif;
+    font-size: 1.1rem;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1.5px solid #e0e0e0;
+    background: #f9f9f9;
+    transition: box-shadow 0.3s, border 0.3s, transform 0.2s;
+    box-shadow: 0 2px 8px #74ebd5cc;
+    margin-bottom: 0;
+}
+.login-input-anim:focus {
+    border: 1.5px solid #e52e71;
+    box-shadow: 0 4px 16px #e52e71cc;
+    transform: scale(1.04);
+}
+@media (max-width: 700px) {
+    .login-anim-card { padding: 18px 6vw; }
+}
